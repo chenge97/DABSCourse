@@ -17,14 +17,25 @@ resources:
       tasks:
         - task_key: notebook_task
           notebook_task:
-            notebook_path: ../src/notebook.ipynb
+            notebook_path: "${var.dab_notebook}"
         - task_key: notebook_task2
           notebook_task:
-            notebook_path: ../src/notebook.ipynb
-        - task_key: notebook_task2
+            notebook_path: ../src/notebook_share_params.ipynb
+            base_parameters:
+              notebook_param: "notebook_param_value"
+        - task_key: notebook_task3
           depends_on:
             - task_key: notebook_task
             - task_key: notebook_task2
           run_if: AT_LEAST_ONE_SUCCESS
           notebook_task:
             notebook_path: ../src/notebook.ipynb
+            # base_parameters: No needed just for demo
+            #  notebook_param_updated: "{{tasks.notebook_task2.values.notebook_param_updated}}"
+        - task_key: job_2_trigger
+          depends_on:
+            - task_key: notebook_task3
+          run_job_task:
+            job_id: ${resources.jobs.dab_project_2_job.id}
+            job_parameters:
+              notebook_param_updated_job2: "{{tasks.notebook_task2.values.notebook_param_updated}}"

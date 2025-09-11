@@ -1,0 +1,8 @@
+variables:
+  dab_cluster:
+    type: complex
+    default:
+      spark_conf:
+        spark_conf_variable: spark_conf_value # Available using spark.conf.get("spark_conf_variable") if you use this as a cluster key
+      spark_env_vars:
+        spark_env_var_variable: spark_env_var_value # Available using os.environ["spark_env_var_variable"] if you use this as a cluster key

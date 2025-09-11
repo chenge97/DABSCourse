@@ -8,6 +8,11 @@ include:
   - resources/*.yml
   - resources/*/*.yml
 
+variables:
+  dab_notebook:
+    description: The path to the main notebook.
+    default: ../src/notebook.ipynb
+
 targets:
   dev:
     # The default target uses 'mode: development' to create a development copy.
@@ -28,3 +33,5 @@ targets:
     permissions:
       - user_name: chng.data@gmail.com
         level: CAN_MANAGE
+    variables:
+      dab_notebook: ../src/notebook_prod.ipynb

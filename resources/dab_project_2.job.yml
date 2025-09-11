@@ -1,0 +1,15 @@
+# The main job for dab_project.
+resources:
+  jobs:
+    dab_project_2_job:
+      name: dab_project_2_job
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: notebook_task_triggered
+          notebook_task:
+            notebook_path: ../src/notebook_share_params_job2.ipynb
+            
