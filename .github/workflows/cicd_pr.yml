@@ -1,0 +1,42 @@
+
+name: "Dev Deployment"
+
+concurrency: "1"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: "Deployment bundle"
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: databricks/setup-cli@main 
+        
+      - run: databricks bundle deploy -t dev
+        env: 
+          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          DATABRICKS_BUNDLE_ENV: dev
+
+  pipeline_update:
+    name: "Run Pipeline Update"
+    runs-on: ubuntu-latest
+    environment: dev
+
+    needs: 
+      - deploy
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: databricks/setup-cli@main
+
+      - run: databricks bundle run dab_project_job -t dev --refresh-all
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          DATABRICKS_BUNDLE_ENV: dev
